@@ -1,6 +1,7 @@
 const addForm = document.querySelector(".add");
 const todo = document.querySelector("#add");
 const list = document.querySelector(".todos");
+const searchForm = document.querySelector(".search");
 
 generalTemplate = (todo) => {
     const html = `<li class="list-group-item d-flex justify-content-between align-items-center">
@@ -17,4 +18,33 @@ addForm.addEventListener("submit", (e) => {
         generalTemplate(todo);
         addForm.reset();
     }
+});
+
+list.addEventListener("click", (e) => {
+    if (e.target.classList.contains("delete")) {
+        e.target.parentElement.remove();
+    }
+});
+
+searchForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+});
+searchForm.search.addEventListener("keyup", (e) => {
+    e.preventDefault();
+    searched = searchForm.search.value.trim();
+    Array.from(list.children).forEach((item) => {
+        if (
+            searched.length &&
+            item.textContent.toLowerCase().includes(searched.toLowerCase())
+        ) {
+            console.log(item.textContent);
+        } else if (
+            searched.length &&
+            item.textContent.includes(searched) === false
+        ) {
+            item.classList.add("d-none");
+        } else {
+            item.classList.remove("d-none");
+        }
+    });
 });
