@@ -3,6 +3,19 @@ const todo = document.querySelector("#add");
 const list = document.querySelector(".todos");
 const searchForm = document.querySelector(".search");
 
+storeData = (todo,type) => {
+    let result = JSON.parse(localStorage.data);
+    if (type){
+    result.push(todo);
+    }
+    else{
+        result = result.filter((i)=>{
+            
+            return !(i===todo);
+        })
+    }
+    localStorage.data = JSON.stringify(result);
+};
 generalTemplate = (todo) => {
     const html = `<li class="list-group-item d-flex justify-content-between align-items-center">
         <span>${todo}</span>
@@ -17,12 +30,14 @@ addForm.addEventListener("submit", (e) => {
     if (todo.length) {
         generalTemplate(todo);
         addForm.reset();
+        storeData(todo,true);
     }
 });
 
 list.addEventListener("click", (e) => {
     if (e.target.classList.contains("delete")) {
         e.target.parentElement.remove();
+        storeData(e.target.parentElement.textContent.trim(), false);
     }
 });
 
@@ -48,3 +63,14 @@ searchForm.search.addEventListener("keyup", (e) => {
         }
     });
 });
+
+if (localStorage.length === 1) {
+    localStorage.setItem("data", JSON.stringify([]));
+} else {
+    JSON.parse(localStorage.data).forEach((i) => {
+        generalTemplate(i);
+    });
+    // result.forEach(i => {
+    //     generalTemplate(i);
+    // });
+}
