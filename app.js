@@ -64,7 +64,7 @@ searchForm.search.addEventListener("keyup", (e) => {
     });
 });
 
-if (localStorage.length === 1) {
+if (localStorage.getItem('data') === null) {
     localStorage.setItem("data", JSON.stringify([]));
 } else {
     JSON.parse(localStorage.data).forEach((i) => {
